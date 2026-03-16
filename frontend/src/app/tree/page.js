@@ -82,7 +82,7 @@ export default function TreePage() {
       return;
     }
 
-    fetch(`http://localhost:5000/api/users/tree/${userId}`, {
+    fetch(`https://mlm-main-1.onrender.com/api/users/tree/${userId}`, {
       headers: {
         "Authorization": `Bearer ${token}`,
         "Content-Type": "application/json",
