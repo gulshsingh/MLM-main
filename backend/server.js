@@ -2,14 +2,16 @@ require("dotenv").config();
 
 const express = require("express");
 const connectDB = require("./config/db");
+const cors = require("cors");
 
 const app = express();
 
-// middleware
+app.use(cors());
 app.use(express.json());
 
-// database connect
 connectDB();
+
+app.use("/api/users", require("./routes/userRoutes"));
 
 app.get("/", (req, res) => {
   res.send("Binary MLM API Running");
