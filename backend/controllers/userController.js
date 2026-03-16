@@ -3,6 +3,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 // SIGNUP
+const mongoose = require("mongoose");
+
 exports.signup = async (req, res) => {
   try {
 
@@ -20,13 +22,18 @@ exports.signup = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      parentId,
       position
     });
 
+    // parentId tabhi set karo jab valid ho
+    if (parentId && mongoose.Types.ObjectId.isValid(parentId)) {
+      user.parentId = parentId;
+    }
+
     await user.save();
 
-    if (parentId) {
+    // Parent update
+    if (parentId && mongoose.Types.ObjectId.isValid(parentId)) {
 
       const parent = await User.findById(parentId);
 

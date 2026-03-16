@@ -67,20 +67,36 @@ export default function Signup() {
     setTimeout(() => setToast((t) => ({ ...t, show: false })), 2600);
   };
 
-  const submit = async () => {
-    if (!form.name || !form.email || !form.password) {
-      setShake(true);
-      setTimeout(() => setShake(false), 400);
-      showToast("Saare fields bharo!", false);
-      return;
-    }
-    setLoading(true);
-    try {
-      const res = await fetch("http://localhost:5000/api/users/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+ const submit = async () => {
+  if (!form.name || !form.email || !form.password) {
+    setShake(true);
+    setTimeout(() => setShake(false), 400);
+    showToast("Saare fields bharo!", false);
+    return;
+  }
+
+  setLoading(true);
+
+  const payload = {
+    name: form.name,
+    email: form.email,
+    password: form.password,
+    position: form.position,
+  };
+
+  // parentId tabhi bhejo jab value ho
+  if (form.parentId && form.parentId.trim() !== "") {
+    payload.parentId = form.parentId;
+  }
+
+  try {
+    const res = await fetch("http://localhost:5000/api/users/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
       const data = await res.json();
       if (res.ok) {
         showToast("Account created successfully!", true);
